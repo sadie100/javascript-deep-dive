@@ -1,5 +1,5 @@
 참고: 
-[6장 예제코드](https://github.com/wikibook/mjs/blob/master/06.md)
+[6장 예제코드](https://github.com/wikibook/mjs/blob/master/06.md).
 이웅모, 『모던 자바스크립트 Deep Dive』, 위키북스, 2020. 
 
 6.1~6.7 by 이은민 (gcount85)
@@ -209,10 +209,10 @@ console.log(foo); // undefined
 1. 심벌 타입이란? ☞ 33장 참고
 	- 원시 타입이며, 변경 불가능함. 다른 값과 중복되지 않는 유일무이한 값  
 2. 심벌 타입을 왜 사용하는가? 
-	- 유일무이한 값이므로 주로 이름이 충돌할 위험이 없는 객체의 유일한 프로퍼티 키를 만들기 위해 사용 ==실제로 많이 사용하는가???==
+	- 유일무이한 값이므로 주로 이름이 충돌할 위험이 없는 객체의 유일한 프로퍼티 키를 만들기 위해 사용 ==(※ 실무에서 그렇게 많이 사용하지는 않는다고 함!)==
 3. 심벌 타입 생성
 	- `Symbol` 함수를 호출해 심벌 값을 생성함 
-	- 이때 생성된 심벌 값은 외부에 노출되지 않으며, 다른 값과 절대 중복되지 않는 유일무이한 값 ==해쉬같은 거???==
+	- 이때 생성된 심벌 값은 외부에 노출되지 않으며, 다른 값과 절대 중복되지 않는 유일무이한 값 ☞ [Symbol을 사용하는 이유는 뭘까 | symbol usage (tistory.com)](https://another-light.tistory.com/105#:~:text=Symbol%20%ED%95%A8%EC%88%98%20Symbol%20%EA%B0%92%EC%9D%80%20Symbol%20%ED%95%A8%EC%88%98%EB%A5%BC%20%ED%98%B8%EC%B6%9C%ED%95%98%EC%97%AC%20%EC%83%9D%EC%84%B1%ED%95%9C%EB%8B%A4.,%EC%8B%AC%EB%B3%BC%20%EA%B0%92%EC%9D%80%20%EC%99%B8%EB%B6%80%EB%A1%9C%20%EB%85%B8%EC%B6%9C%EB%90%98%EC%A7%80%20%EC%95%8A%EC%95%84%20%ED%99%95%EC%9D%B8%ED%95%A0%20%EC%88%98%20%EC%97%86%EB%8B%A4.)
 ```JS
 // 심벌 값 생성
 var key = Symbol('key');
