@@ -70,10 +70,10 @@ ___
 26.3~26.4장 by 이은민 (gcount85)
 
 ## 26.3 화살표 함수
-- 화살표 함수<sub>arrow function</sub>는 `function` 키워드 대신 화살표(=>, fat arrow)를 사용하여 함수를 정의하는 방식 ==파이썬의 lambda 같은?==
+- 화살표 함수<sub>arrow function</sub>는 `function` 키워드 대신 화살표(`=>`, fat arrow)를 사용하여 함수를 정의하는 방식 (※ `=>`는 `return`의 의미를 띤다고 생각하기)
 - 기존 함수 정의 보다 간략하게 함수를 정의함
 - 표현 뿐 아니라, 내부 동작도 기존의 함수보다 간략함 
-- 화살표 함수는 ==콜백 함수== 내부에서 `this`가 전역 객체를 가리키는 문제를 해결하기 위한 대안으로 유용함 
+- 화살표 함수는 콜콜백 함수 내부에서 `this`가 전역 객체를 가리키는 문제를 해결하기 위한 대안으로 유용함 
 ### 26.3.1 화살표 함수 정의
 #### 함수 정의
 - 함수 표현식으로 정의
@@ -145,7 +145,7 @@ const sum = (a, b) => {
   return result; // return 값을 명시함 
 };
 ```
-- 화살표 함수도 즉시 실행 함수<sub>IFE</sub>로 사용할 수 있음 ==즉시 실행 함수란?==
+- 화살표 함수도 즉시 실행 함수<sub>IFE</sub>로 사용할 수 있음 
 ```js
 // 함수명 = (매개변수 => ({함수의함수명 {함수 몸체 내부문}}))(매개변수에 넘겨줄 인수)
 const person = (name => ({
@@ -154,7 +154,7 @@ const person = (name => ({
 
 console.log(person.sayHi()); // Hi? My name is Lee.
 ```
-- 화살표 함수도 일급 객체이므로 `Array.prototype.map`, `Array.prototype.filter`, `Array.prototype.reduce` 같은 고차 함수<sub>Higher-Order Function, HOF</sub>에 인수로 전달할 수 있음 ==고차 함수란?==
+- 화살표 함수도 일급 객체이므로 `Array.prototype.map`, `Array.prototype.filter`, `Array.prototype.reduce` 같은 고차 함수<sub>Higher-Order Function, HOF</sub>에 인수로 전달할 수 있음 
 - 이 경우 일반적인 함수 표현식보다 표현이 간결하고 가독성이 좋음 
 ```js
 // ES5; 화살표 함수를 이용하지 않음 
@@ -182,7 +182,7 @@ new Foo(); // TypeError: Foo is not a constructor
 function normal(a, a) { return a + a; }
 console.log(normal(1, 2)); // 4
 ```
-- 단 strict mode에서 중복된 매개변수 이름을 선언하면 에러가 발생한다 ==strict 모드는 자주 사용할까?==
+- 단 strict mode에서 중복된 매개변수 이름을 선언하면 에러가 발생한다 (※ 단 strict mode를 사용하면 JS 내의 편법(?)도 사용할 수 없게 된다!)
 ```js
 'use strict';
 
@@ -212,8 +212,8 @@ const arrow = (a, a) => a + a;
 		- 그런데 **클래스 내부**의 모든 코드에는 strict mode가 암묵적으로 적용 됨
 		- 따라서 `Array.prototype.map` 메서드의 콜백 함수에서도 strict mode가 적용 됨 → 이 모드에서 일반 함수로 호출된 모든 함수 내부의 `this`에는 전역 객체가 아닌, `undefined`로 바인딩됨! 
 		- 예제의 `Array.prototype.map` 메서드의 콜백 함수 내부의 `this`에 `undefined`가 바인딩 됨 
-
 ```js
+// 콜백 함수 내부의 this 문제를 보여주는 예제 
 class Prefixer {
   constructor(prefix) {
     this.prefix = prefix;
@@ -343,9 +343,8 @@ const foo = () => console.log(arguments);
 foo(1, 2); // ReferenceError: arguments is not defined
 ```
 - `arguments` 객체는 함수를 정의할 때 매개변수의 개수를 확정할 수 없는 가변 인자 함수를 구현할 때 유용함
-- 하지만 `arguments` 객체를 사용할 수 없음.
 - 상위 스코프의 `arguments` 객체를 참조할 수는 있지만, 화살표 함수 자신에게 전달된 인수 목록을 확인할 수 없고 상위 함수에게 전달된 인수 목록을 참조하므로 그다지 도움이 되지 않음 
-∴ 화살표 함수로 가변 인자 함수를 구현할 때, 반드시 Rest 파라미터를 사용함! 
+∴ **화살표 함수로 가변 인자 함수를 구현할 때, 반드시 Rest 파라미터를 사용해라!**
 
 ## 26.4 Rest 파라미터
 ### 26.4.1 기본 문법
@@ -435,4 +434,4 @@ function sum(...args) {
 }
 console.log(sum(1, 2, 3, 4, 5)); // 15
 ```
-- 함수와 ES6 메서드는 Rest 파라미터와 `arguments` 객체를 모두 사용할 수 있음. 하지만 화살표 함수는 함수 자체의 `arguments` 객체를 갖지 않음 → 따라서 화살표 함수로 가변 인자 함수를 구현할 때 반드시 Rest 파라미터를 사용해야 함!
+- 함수와 ES6 메서드는 Rest 파라미터와 `arguments` 객체를 모두 사용할 수 있음. 하지만 화살표 함수는 함수 자체의 `arguments` 객체를 갖지 않음 → **화살표 함수로 가변 인자 함수를 구현할 때 반드시 Rest 파라미터를 사용해라!** 
