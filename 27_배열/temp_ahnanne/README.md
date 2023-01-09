@@ -399,3 +399,7 @@
       return hasArray(numbers) ? flattenNested(flatten(numbers)) : numbers;
     }
     ```
+
+## 27.9 배열 고차 함수
+
+[TODO](https://www.notion.so/25-JavaScript-20-12-20-27-9-e5b5a26852a14a96905c24dd9e92db15)
