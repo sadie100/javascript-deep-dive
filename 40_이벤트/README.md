@@ -17,7 +17,7 @@
 		- 하지만 브라우저는 언제 이벤트가 발생하는지 감시할 수 있음 
 		- → 브라우저에게 함수 호출을 위임! 
 - 이벤트 드리븐 프로그래밍: 프로그램의 흐름을 이벤트 중심으로 제어하는 프로그래밍 방식
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -102,7 +102,7 @@
 	- 함수 참조를 할당하지 않는 이유는 인수를 쉽게 전달하기 위함 (e.g. `<button onclick="sayHi">Click me!</button>` 같은 경우를 보기)
 - 알아둘 필요는 있으나 사용 비권장! 하지만 CBD 방식의 프레임워크/라이브러리(React, Angular, Vue.js, Svelte ...)에서 사용하는 방식이기도 함. 
 
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -131,7 +131,7 @@ function onclick(event) {
 	 - 이벤트 타깃: 이벤트를 발생시킬 객체 
 	- 이벤트 타입: 이벤트의 종류를 나타내는 문자열
 	- 이벤트 핸들러:  호출할 함수 
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -155,7 +155,7 @@ function onclick(event) {
 - *이벤트 핸들러 어트리뷰트 방식*도 결국 DOM 노드 객체의 이벤트 핸들러 프로퍼티로 변환되므로, 결과적으로 이 방식임 ==????==
 - 장점: 이벤트 핸들러 어트리뷰트 방식에서 있었던 HTML과 JS가 뒤섞이는 문제 해결
 - 단점: 이벤트 핸들러 프로퍼티에 하나의 이벤트 핸들러만 바인딩할 수 있음 
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -185,7 +185,7 @@ function onclick(event) {
 - 이벤트 타입: 다른 방식들과 달리 `on` 접두사를 붙이지 않음! 
 - `useCapture`: 이벤트를 캐치할 이벤트 전파 단계(캡쳐링 또는 버블링)을 지정 ☞ 40.6절 "이벤트 전파"
 
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -208,7 +208,7 @@ function onclick(event) {
 ```
 
 - 만일 이벤트 핸들러 프로퍼티 방식과, `addEventListener` 메소드 방식을 동시에 사용한다면?
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -231,7 +231,7 @@ function onclick(event) {
 ```
 
 - `addEventListener` 메서드 방식은 이벤트 핸들러 프로퍼티 방식으로 바인딩된 이벤트 핸들러에 영향 X → 버튼 클릭 이벤트가 발생했을 때 2개의 이벤트 핸들러가 등록한 순서대로 모두 호출 됨.
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -254,7 +254,7 @@ function onclick(event) {
 ```
 
 - 단 함수 참조가 동일한 이벤트 핸들러를 등록하면 하나의 핸들러만 등록 됨 
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -276,7 +276,7 @@ function onclick(event) {
 
 - `removeEventListener` 메서드 이용. 
 - `addEventListener`에 전달한 인수와 동일하게 맞출 것
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
@@ -329,7 +329,7 @@ $button.addEventListener('click', function () {
 
 - 이벤트 핸들러 프로퍼티 방식으로 등록한 이벤트 핸들러는 해당 메서드로 제거할 수 없음. 
 - 이때는 `null`을 할당해 제거하도록 함. 
-```js
+```html
 <!DOCTYPE html>
 <html>
 <body>
