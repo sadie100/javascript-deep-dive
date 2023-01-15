@@ -351,8 +351,177 @@ $button.addEventListener('click', function () {
 </body>
 </html>
 ```
+---
 
+## 40.5 이벤트 객체
 
+이벤트가 발생하면 이벤트 객체가 동적으로 생성됨
+
+- 이벤트 객체 : 이벤트에 관련한 다양한 정보를 담고 있는 객체
+- ******************************************************************************************************************************************************생성된 이벤트 객체는 이벤트 핸들러의 첫 번째 인수로 전달됨******************************************************************************************************************************************************
+
+```jsx
+<!DOCTYPE html>
+<html>
+<body>
+  <p>클릭하세요. 클릭한 곳의 좌표가 표시됩니다.</p>
+  <em class="message"></em>
+  <script>
+    const $msg = document.querySelector('.message');
+
+    // 클릭 이벤트에 의해 생성된 이벤트 객체는 이벤트 핸들러의 첫 번째 인수로 전달된다.
+    function showCoords(e) {
+      $msg.textContent = `clientX: ${e.clientX}, clientY: ${e.clientY}`;
+    }
+
+    document.onclick = showCoords;
+  </script>
+</body>
+</html>
+```
+
+클릭 이벤트에 의해 생성된 이벤트 객체는 이벤트 핸들러의 첫 번째 인수로 전달되어 매개변수 e에 암묵적으로 할당됨
+
+→ 이벤트 객체를 전달받으려면 이벤트 핸들러를 정의할 때 전달받을 매개변수를 명시적으로 선언해야 함(ex: e). 이 때 변수 이름은 상관없음
+
+******But.****** **이벤트 핸들러 어트리뷰트 방식의 경우, 이벤트 핸들러에 이벤트 객체를 전달받으려면 첫 번째 매개변수 이름이 반드시 event이어야 함**
+
+```jsx
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    html, body { height: 100%; }
+  </style>
+</head>
+<!-- 이벤트 핸들러 어트리뷰트 방식의 경우 event가 아닌 다른 이름으로는 이벤트 객체를
+전달받지 못한다. -->
+<body onclick="showCoords(event)">
+  <p>클릭하세요. 클릭한 곳의 좌표가 표시됩니다.</p>
+  <em class="message"></em>
+  <script>
+    const $msg = document.querySelector('.message');
+
+    // 클릭 이벤트에 의해 생성된 이벤트 객체는 이벤트 핸들러의 첫 번째 인수로 전달된다.
+    function showCoords(e) {
+      $msg.textContent = `clientX: ${e.clientX}, clientY: ${e.clientY}`;
+    }
+  </script>
+</body>
+</html>
+```
+
+⇒ 이벤트 핸들러 어트리뷰트 값은 사실 암묵적으로 생성되는 이벤트 핸들러의 함수 몸체를 의미하기 때문.
+
+onclick=”showCoords(event)” 어트리뷰트는 다음과 같은 함수를 암묵적으로 생성하여 onclick 이벤트 핸들러 프로퍼티에 할당하는데, 
+
+```jsx
+function onclick(event) {
+  showCoords(event);
+}
+```
+
+암묵적으로 생성된 onclick 이벤트 핸들러의 첫 번째 매개변수의 이름이 event로 명명되기 때문에 event가 아닌 다른 이름으로는 이벤트 객체를 전달받지 못함
+
+### 40.5.1 이벤트 객체의 상속 구조
+
+이벤트 타입에 따라 다양한 타입의 이벤트 객체가 생성됨
+
+이벤트 객체는 다음과 같은 상속 구조를 가짐 :
+
+![이벤트 객체의 상속 구조](https://user-images.githubusercontent.com/82367039/212538986-c6f611e3-dc00-4928-a1c6-2c10c3fda6b1.png)
+
+위 그림에서 Event, UIEvent, MouseEvent 등은 모두 생성자 함수
+
+⇒ 생성자 함수를 호출하여 이벤트 객체를 생성할 수 있음
+
+Event 인터페이스는 DOM 내에서 발생한 이벤트에 의해 생성되는 이벤트 객체. 모든 이벤트 객체의 공통 프로퍼티가 정의되어 있음
+
+FocusEvent, MouseEvent 같은 하위 인터페이스에는 이벤트 타입에 따라 고유한 프로퍼티가 정의되어 있음
+
+⇒ 이벤트 객체의 프로퍼티는 발생한 이벤트의 타입에 따라 달라짐
+
+### 40.5.2 이벤트 객체의 공통 프로퍼티
+
+Event 인터페이스의 이벤트 관련 프로퍼티는 모든 이벤트 객체가 상속받는 공통 프로퍼티.
+
+공통 프로퍼티는 다음과 같음
+
+| 프로퍼티 | 설명 | 타입 |
+| --- | --- | --- |
+| type | 이벤트 타입 | 문자열 |
+| target | 이벤트를 발생시킨 DOM 요소 | DOM 요소 노드 |
+| currentTarget | 이벤트 핸들러가 바인딩된 DOM 요소 | DOM 요소 노드 |
+| eventPhase | 이벤트 전파 단계 <br> 0: 이벤트 없음, 1: 캡처링 단계, 2: 타깃 단계, 3: 버블링 단계 | 숫자 |
+| bubbles | 이벤트를 버블링으로 전파하는지 여부 <br> 아래 이벤트는 bubbles: false로 버블링하지 않음 <br> - 포커스 이벤트 focus/blur <br> - 리소스 이벤트 load/unload/abort/error <br> - 마우스 이벤트 mouseenter/mouseleave | 불리언 |
+| cancelable | preventDefault 메소드를 호출하여 이벤트의 기본 동작을 취소할 수 있는지 여부. <br> 아래 이벤트는 cancelable: false로 취소할 수 없음 <br> - 포커스 이벤트 focus/blur <br> - 리소스 이벤트 load/unload/abort/error <br> - 마우스 이벤트 dbclick/mouseenter/mouseleave | 불리언 |
+| defaultPrevented | preventDefault 메소드를 호출하여 이벤트를 취소하였는지 여부 | 불리언 |
+| isTrusted | 사용자의 행위에 의해 발생한 이벤트인지 여부. <br> 자바스크립트 코드를 통해 인위적으로 발생시킨 이벤트, 예를 들어 click 메소드 또는 dispatchEvent 메소드를 통해 발생시킨 이벤트인 경우, isTrusted는 false이다. | 불리언 |
+| timeStamp | 이벤트가 발생한 시각(1970/01/01/00:00:00부터 경과한 밀리초) | 숫자 |
+
+일반적으로 이벤트 객체의 target 프로퍼티와 currentTarget 프로퍼티는 동일한 DOM 요소를 가리킴
+
+but, 나중에 살펴볼 이벤트 위임에서는 target과 currentTarget 프로퍼티가 서로 다른 DOM요소를 가리킬 수도 있다.
+
+### 40.5.3 마우스 정보 취득
+
+MouseEvent 타입의 이벤트 객체는 click, dblclick, mousedown, mouseup, mousemove, mouseenter, mouseleave 이벤트가 발생하면 생성됨
+
+다음과 같은 고유 프로퍼티를 갖는다.
+
+- 마우스 포인터의 좌표 정보를 나타내는 프로퍼티 : screenX/screenY, clientX/clientY, pageX/pageY, offsetX/offsetY
+    - clientX/clientY는 뷰포트(웹페이지의 가시 영역)를 기준으로 마우스 포인터 좌표를 나타냄
+- 버튼 정보를 나타내는 프로퍼티 : altKey, ctrlKey, shiftKey, button
+
+### 40.5.4 키보드 정보 취득
+
+KeyboardEvent 타입의 이벤트 객체는 keydown, keyup, keypress 이벤트가 발생하면 생성됨
+
+altKey, ctrlKey, shiftKey, metaKey, key, keyCode 프로퍼티를 가짐
+
+- key : 입력한 키 값을 문자열로 반환. ex) 엔터 키의 경우, key 프로퍼티로 ‘Enter’ 반환
+    
+    입력한 키와 key 프로퍼티 값의 대응 관계는 [https://keycode.info](https://keycode.info) 참고
+    
+
+input 요소의 입력 필드에 한글을 입력하고 엔터 키를 누르면 keyup 이벤트 핸들러가 두 번 호출됨. 이 문제를 회피하려면 keyup 이벤트 대신 keydown 이벤트를 캐치하도록 …
+
+## 40.6 이벤트 전파
+
+계층적 구조에 포함되어 있는 HTML 요소에 이벤트가 발생할 경우 연쇄적 반응이 일어남 ⇒ **********************이벤트 전파**********************
+
+이벤트 전파는 이벤트 객체가 전파되는 방향에 따라 3단계로 구분 가능
+
+1. 캡처링 단계 : 이벤트가 상위 요소에서 하위 요소 방향으로 전파(부모 요소→자식 요소)
+2. 타깃 단계 : 이벤트가 이벤트 타깃에 도달
+3. 버블링 단계 : 이벤트가 하위 요소에서 상위 요소 방향으로 전파(자식 요소→부모 요소)
+
+세 단계는 이벤트가 발생했을 때 순차적으로 발생함
+
+![이벤트 전파](https://user-images.githubusercontent.com/82367039/212539018-22bb283e-fd46-4356-904f-2b9c44e99365.svg)
+
+이벤트 핸들러 어트리뷰트/프로퍼티 방식으로 등록한 이벤트 핸들러는 타깃 단계와 버블링 단계의 이벤트만 캐치 가능
+
+addEventListener 메소드의 경우, 세번째 매개변수에 true를 설정하면 캡처링 단계의 이벤트를 캐치할 수 있음
+
+(false 또는 미설정하면 타깃 단계와 버블링 단계의 이벤트만 캐치 가능)
+
+<aside>
+❗ 이벤트는 이벤트를 발생시킨 이벤트 타깃은 물론 상위 DOM 요소(부모 요소)에서도 캐치할 수 있다.
+⇒ DOM 트리를 통해 전파되는 이벤트는 이벤트가 통과하는 경로에 위치한 모든 DOM 요소에서 캐치할 수 있다.
+
+</aside>
+
+대부분의 이벤트는 캡처링과 버블링을 통해 전파되지만, 버블링을 통해 전파되지 않는 이벤트도 있다.
+
+- 포커스 이벤트 : focus/blur
+- 리소스 이벤트 : load/unload/abort/error
+- 마우스 이벤트 : mouseenter/mouseleave
+
+이벤트 타깃의 상위 요소에서 위 이벤트를 캐치하려면 캡처링 단계의 이벤트를 캐치하거나, 대체할 수 있는 이벤트를 사용하면 된다.
+
+- focus/blur → focusin/focusout
+- mouseenter/mouseleave → mouseover/mouseout
 
 
 
