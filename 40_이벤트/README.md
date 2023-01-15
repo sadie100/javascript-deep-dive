@@ -1,7 +1,7 @@
 
 참고:
-[40장 예제코드](https://github.com/wikibook/mjs/blob/master/40.md).
-[웹 프로그래밍 튜토리얼 | Poiemaweb](https://poiemaweb.com/).
+[40장 예제코드](https://github.com/wikibook/mjs/blob/master/40.md).<br>
+[웹 프로그래밍 튜토리얼 | Poiemaweb](https://poiemaweb.com/).<br>
 이웅모, 『모던 자바스크립트 Deep Dive』, 위키북스, 2020.
 
 40 ~ 40.4 by 이은민 (gcount85)
@@ -126,11 +126,11 @@ function onclick(event) {
 ### 40.3.2 이벤트 핸들러 프로퍼티 방식
 - 이벤트 핸들러 프로퍼티의 키: "`on` + 이벤트 타입"으로 이루어짐 (e.g. `onclick`, `onkeydown` 등)
 - 이벤트 핸들러 등록하는 법: 이벤트 핸들러 프로퍼티에 함수를 바인딩
+<br>![](https://velog.velcdn.com/images/cold_he22/post/d5bb2f97-4140-4866-b276-b4bd98481c9c/image.png) [^1]
 - 용어 정리
 	 - 이벤트 타깃: 이벤트를 발생시킬 객체 
 	- 이벤트 타입: 이벤트의 종류를 나타내는 문자열
 	- 이벤트 핸들러:  호출할 함수 
-![](https://velog.velcdn.com/images/cold_he22/post/d5bb2f97-4140-4866-b276-b4bd98481c9c/image.png) [^1]
 ```js
 <!DOCTYPE html>
 <html>
