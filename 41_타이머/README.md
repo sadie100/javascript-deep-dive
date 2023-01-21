@@ -21,7 +21,8 @@
 ## 41.2 타이머 함수
 ### 41.2.1 `setTimeout` / `clearTimeout`
 #### `setTimeout`
-- **단 한번** 동작하는 타이머 생성. 타이머 만료 -> 콜백 함수 호출
+- **단 한번** 동작하는 타이머 생성. 
+- 타이머 만료 → 콜백 함수 호출
 ```js
 const timeoutId = setTimeout(func|code[, delay, param1, param2, ...])
 ```
@@ -63,7 +64,7 @@ clearTimeout(timerId);
 #### `setInterval`
 - **반복적으로** 동작하는 타이머 생성. **타이머가 취소될 때까지** 타이머 만료될 때마다, 콜백 함수 반복 호출
 ```js
-const timeoutId = setInterval(func|code[, delay, param1, param2, ...])
+const timeoutId = setInterval(func|code, [delay, param1, param2, ...])
 ```
 - 매개변수, 반환값에 대한 내용 모두 `setTimeout`과 동일하므로 생략
 ```js
@@ -112,7 +113,7 @@ _.debounce(function, delay, options)
 - 사용 예시
 	1. `scroll` 이벤트 처리
 	2. 무한 스크롤 UI 구현 등
-- 실무에서는Underscore, Lodash의 `_.debounce` 함수 사용 권장 ☞ [underscore 스로틀 함수](https://www.geeksforgeeks.org/underscore-_-throttle-function/), [lodash 스로틀 함수](https://www.geeksforgeeks.org/lodash-_-throttle-method/?ref=rp)
+- 실무에서는Underscore, Lodash의 `_.throttle` 함수 사용 권장 ☞ [underscore 스로틀 함수](https://www.geeksforgeeks.org/underscore-_-throttle-function/), [lodash 스로틀 함수](https://www.geeksforgeeks.org/lodash-_-throttle-method/?ref=rp)
 ```js
 // Underscore, Lodash의 `throttle` 함수 
 _.throttle(function, delay, [option])
