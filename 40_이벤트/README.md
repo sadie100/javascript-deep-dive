@@ -533,3 +533,97 @@ addEventListener 메소드의 경우, 세번째 매개변수에 true를 설정�
 
 [^1]: https://velog.io/@cold_he22/%EC%9D%B4%EB%B2%A4%ED%8A%B8
 [^2]: https://poiemaweb.com/js-event
+
+40.7 ~ 40 끝 by 안예인 (ahnanne)
+
+## 40.7 이벤트 위임
+
+- 이벤트 위임(event delegation)이란, 여러 하위 DOM 요소(예: `li`) 각각에 이벤트 핸들러를 등록하는 대신, 하나의 상위 DOM 요소(예: `ul`, `ol`)에 이벤트 핸들러를 등록하는 방법이다.
+
+- 이벤트 위임을 사용하지 않으면..
+
+  - 하위 DOM 요소의 개수가 많을 경우, 각각에 이벤트 핸들러를 등록하게 되면 성능 저하로 이어짐.
+
+  - 유지보수하기 불편함.
+
+- 이벤트 위임 사용 이점
+
+  - 상위 DOM 요소에만 이벤트 핸들러를 등록하면 되기 때문에 반복 작업을 하지 않아도 됨.
+
+  - 하위 DOM 요소가 동적으로 추가되더라도 해당 요소에 이벤트 핸들러를 따로 등록하지 않아도 됨.
+
+- 이벤트 위임 사용할 때 주의할 점
+
+  - 상위 요소에 이벤트 핸들러를 등록하기 때문에, 이벤트를 실제로 발생시킨 DOM 요소(`e.target`)와 이벤트 핸들러를 실제 등록해둔 요소(`e.currentTarget`)가 다를 수 있다.
+
+  - 예를 들어서 어떤 `li` 요소들의 상위 요소인 `ul`에 클릭 이벤트에 대한 이벤트 핸들러를 등록했을 경우를 가정해보자. 각 `li` 요소를 클릭할 때, 이벤트 객체의 `currentTarget` 프로퍼티는 언제나 `ul` 요소를 가리키겠지만 `target` 프로퍼티는 클릭 당한 `li` 요소, 즉 실제로 이벤트를 발생시킨 DOM 요소를 가리키게 된다.
+
+## 40.8 DOM 요소의 기본 동작의 조작
+
+### 40.8.1 DOM 요소의 기본 동작 중단
+
+- DOM 요소는 저마다 기본 동작이 있음. 예를 들어 `form` 요소의 기본 동작은 양식을 제출하며 요청을 보내는 것인데, 요청을 보낸 뒤 페이지가 reload 또는 `action` 어트리뷰트에 명시한 페이지로 redirect 된다. `preventDefault`를 사용하여 `form` 요소의 기본 동작을 중단시키면 이러한 양식 제출 및 요청을 하는 동작을 막아버리므로 결과적으로 reload/redirect도 되지 않게 되는 것이다. (참고: [Prevent form submit event from reloading the page](https://adnan-tech.com/prevent-form-submit-event-from-reloading-the-page))
+
+  - 요청에 대한 처리는 `form`의 기본 동작을 통해서 하지 않고 자바스크립트 코드로 대신 하면 된다.
+
+  - 그렇다면 굳이 `form`을 사용하는 이유: [semantic markup](https://stackoverflow.com/questions/31066693/what-is-the-purpose-of-the-html-form-tag)
+
+  ```js
+  const preventDefault = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  return (
+    <Styled.TodoTemplateBlock>
+      {children}
+      <form onClick={preventDefault}>
+        <button>Click Me</button>
+      </form>
+    </Styled.TodoTemplateBlock>
+  );
+  ```
+
+### 40.8.2 이벤트 전파 방지
+
+- 이벤트 객체의 `stopPropagation` 메서드는 이벤트 전파(캡처링/버블링)를 중단시킴.
+
+- 이를 활용하여, 이벤트 위임에서 특정 하위 요소를 배제시킬 수 있다.
+
+## 40.9 이벤트 핸들러 내부의 this
+
+> 참고: [자바스크립트에서의 this](https://ahnanne.tistory.com/40)
+
+### 40.9.1 이벤트 핸들러 어트리뷰트 방식
+
+1. 이벤트 핸들러 내부의 `this`는 전역 객체(`window`)를 가리킨다.
+
+  - 이벤트 핸들러로 등록된 함수는 일반 함수로서 호출되기 때문
+
+2. 이벤트 핸들러를 호출할 때 인자로 전달한 `this`는 이벤트를 바인딩한 DOM 요소(`currentTarget`)를 가리킨다.
+
+  - 이는 바로 다음에 살펴볼 이벤트 핸들러 프로퍼티 방식과 동일하다.
+
+### 40.9.2 이벤트 핸들러 프로퍼티 방식과 addEventListener 메서드 방식
+
+- 두 경우 모두, 이벤트 핸들러 내부의 `this`는 이벤트를 바인딩한 DOM 요소(`currentTarget`)를 가리킨다.
+
+- 단, <b>화살표 함수로 정의한 이벤트 핸들러 내부의 `this`는 앞서 살펴보았듯이 자체적인 `this` 바인딩을 갖지 않으므로 상위 스코프의 `this`를 가리키게 된다.</b>
+
+## 40.10 이벤트 핸들러에 인수 전달
+
+- 이벤트 핸들러 어트리뷰트 방식: 함수 호출문(=말그대로 함수를 호출하는 문)을 사용할 수 있으므로 인자 전달 가능
+
+- 이벤트 핸들러 프로퍼티 방식, `addEventListener` 메서드 방식: 기본적으로 인자를 전달할 수 없지만, 이벤트 핸들러 내부에서 함수를 호출하는 방식으로 구현하면 인자를 전달할 수 있다.
+
+  - 함수 호출문을 사용할 수 없으므로 인자를 전달할 수 없는 것임.
+
+    - 함수 호출문을 사용할 수 없는 이유: 이 두 방식은 **이벤트 핸들러를 브라우저가 호출**하기 때문에, 함수 호출문이 아니라 **함수 자체를 등록해야** 함.
+
+  - 이벤트 핸들러 내부에서 함수를 호출하는 방식
+
+    ```js
+    // 교재 p.794
+    $input.onblur = () => {
+      checkUserNameLength(인자);
+    };
+    ```
