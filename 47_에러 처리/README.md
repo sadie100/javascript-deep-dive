@@ -72,3 +72,45 @@ try … catch … finally 문을 실행하면 먼저 try 코드 블록이 실행
 finally 코드 블록은 에러 발생과 상관없이 반드시 한 번 실행됨
 
 try … catch … finally 문으로 에러를 처리하면 프로그램이 강제 종료되지 않음
+
+## 47.3 Error 객체
+
+- Error 생성자 함수는 에러 객체를 생성한다. Error 생성자 함수에는 에러를 상세히 설명하는 에러 메시지를 인수로 전달할 수 있다.
+
+```jsx
+const error = new Error('invalid');
+```
+
+- Error 생성자 함수가 생성한 에러 객체는 messsage 프로퍼티와 stack 프로퍼티를 갖는다. message프로퍼티는 인수로 전달한 에러 메시지이고, stack프로퍼티는 디버깅 목적으로 사용한다.
+- 자바스크립트는 Error생성자 함수를 포함해 7가지의 에러 객체를 생성할 수 있는 Error 생성자 함수를 제공한다. 각각의 함수들은 Error.prototype을 상속 받는다.
+
+## 47.4 throw 문
+
+- Error 생성자 함수로 에러 객체를 생성한다고 에러가 발생하는 것은 아니다. 즉, 에러 객체 생성과 에러 발생은 의미가 다르다.
+
+```jsx
+try {
+	new Error('something wrong')
+} catch (error) {
+	console.log(error);
+}
+```
+
+에러를 발생시키려면 try 코드 블록에서 throw 문으로 에러 객체를 던져야 한다.
+
+```jsx
+// throw 표현식;
+
+try {
+	// 에러 객체를 던지면 catch 코드 블록이 실행되기 시작한다.
+	throw new Error('something wrong')
+} catch (error) {
+	console.log(error);
+}
+```
+
+throw 문의 표현식은 어떤 값이라도 상관없지만 일반적으로 에러 객체를 지정한다. 에러를 던지면 catch 문의 에러 변수가 생성되고 던져진 에러 객체가 할당된다. 그리고 catch 코드 블록이 실행된다.
+
+## 47.5 에러의 전파
+
+에러는 호출자 방향으로 전파되는데 이때 throw된 에러를 캐치하여 적절히 대응하면 프로그램을 강제 종료시키지 않고 코드의 실행 흐름을 복구할 수 있다. throw된 에러를 어디에서도 캐치하지 않으면 프로그램은 강제 종료된다.
